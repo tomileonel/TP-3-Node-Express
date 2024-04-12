@@ -11,4 +11,4 @@ alumnosArray.push(new Alumno("Esteban Dido", "22888444", 20));
 alumnosArray.push(new Alumno("Matias Queroso", "28946255", 51));
 alumnosArray.push(new Alumno("Elba Calao", "32623391", 18));
 
-export default { Alumno, alumnosArray };
+export default alumnosArray;
