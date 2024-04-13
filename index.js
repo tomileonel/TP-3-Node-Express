@@ -76,12 +76,44 @@ app.get('/alumnos/:dni', (req, res) => {
     }
 });
 
-app.post('/alumnos', (req, res) => {
+app.post('/alumnos/:username/:dni/:edad', (req, res) => {
+    const username1 = req.params.username;
+    const dni1 = req.params.dni;
+    const edad1 = req.params.edad;
+    const nuevoAlumno = { username:username1, dni:dni1, edad:edad1 };
+    alumnosArray.push(nuevoAlumno);
+    res.status(201).send("Alumno creado correctamente.");
 });
-//incompleto
-app.delete('/alumnos', (req, res) => {
+
+app.delete('/alumnos/:dni', (req, res) => {
+    const dni = req.params.dni;
+    const alumnoIndex = alumnosArray.findIndex(alumno => alumno.dni === dni);
+    if (alumnoIndex !== -1) {
+        alumnosArray.splice(alumnoIndex, 1);
+        res.status(200).send("Alumno eliminado correctamente.");
+    } else {
+        res.status(404).send("Alumno no encontrado.");
+    }
 });
-//incopleto
+
+app.get('/omdb/searchbypage/:search/:page?', async (req, res) => {
+    const search = req.params.search;
+    const page = req.params.page;
+    const result = await OMDBSearchByPage(search, page);
+    res.status(200).send(result);
+});
+
+app.get('/omdb/searchcomplete/:search', async (req, res) => {
+    const search = req.params.search;
+    const result = await OMDBSearchComplete(search);
+    res.status(200).send(result);
+});
+
+app.get('/omdb/getbyomdbid/:imdbID', async (req, res) => {
+    const imdbID = req.params.imdbID;
+    const result = await OMDBGetByImdbID(imdbID);
+    res.status(200).send(result);
+});
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
@@ -89,58 +121,3 @@ app.listen(port, () => {
 
    
 
-//    POST "/alumnos"
-// Body:
-// {
-// "username" : "Monica Gaduro",
-// "dni" : "11222333",
-// "edad" : 25
-// }
-// Inserta un alumno en el Array de Alumnos
-// Retorna status 201 (Created).
-// Nota: Utilizar el método push de la clase Array.
-// DELETE "/alumnos"
-// Body:
-// {
-// "dni" : "11222333"
-// }
-// Elimina a un alumno del array de Alumnos según el DNI enviado.
-// Retorna status 200 (OK) en caso de que lo haya encontrado y eliminado.
-// Retorna status 404 (Not Found) en caso de que no exista un alumnos con ese DNI.
-// Nota: Utilizar el método findIndex y splice de la clase Array
-
-// Endpoints que reutilizan el módulo omdb-wrapper.js
-// GET "/omdb/searchbypage?search={texto}&p={pagina}"
-// Retorna status 200 (OK) y el resultado de la operación.
-// GET "/omdb/searchcomplete?search={texto}"
-// Retorna status 200 (OK) y el resultado de la operación.
-// GET "/omdb/getbyomdbid?imdbID={imdb}"
-// Retorna status 200 (OK) y el resultado de la operación.
-// NOTA: Si un endpoint invoca internamente a alguna operación asincrónica, entonces debemos
-// marcarlos como un método asincrónico también. Internamente debemos invocar con await, para
-// poder esperar el resultado antes de operar con él.
-// app.get('/omdb/searchbypage', async (req, res) => {
-// ...
-// let resultado = await metodoAsincronico(...);
-// ...
-// })
-
-
-
-// app.get('/omdb/searchbypage', async (req, res) => {
-//     const { search, p } = req.query;
-//     const result = await omdb.searchByPage(search, p);
-//     res.status(200).json(result);
-// });
-
-// app.get('/omdb/searchcomplete', async (req, res) => {
-//     const { search } = req.query;
-//     const result = await omdb.searchComplete(search);
-//     res.status(200).json(result);
-// });
-
-// app.get('/omdb/getbyomdbid', async (req, res) => {
-//     const { imdbID } = req.query;
-//     const result = await omdb.getByOMDbID(imdbID);
-//     res.status(200).json(result);
-// });
