@@ -81,6 +81,7 @@ app.get('/omdb/getbyomdbid', async (req, res) => {
   res.status(200).json(resultado);
 });
 
+// Alumnos endpointss
 app.get('/alumnos', (req, res) => {
   res.status(200).json(alumnosArray);
 });
