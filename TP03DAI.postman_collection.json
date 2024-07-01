@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "854c7961-a794-47ca-be91-1ad561f92ee4",
+		"name": "TP03DAI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Endpoints Comunes",
+			"item": [
+				{
+					"name": "¡Ya estoy respondiendo!",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Saludar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/saludar/Juan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"saludar",
+								"Juan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Fecha (Valida)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/validarfecha/2024/7/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"validarfecha",
+								"2024",
+								"7",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Fecha (Invalida)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/validarfecha/2024/7/200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"validarfecha",
+								"2024",
+								"7",
+								"200"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endpoints que reutilizan el módulo matemática.js",
+			"item": [
+				{
+					"name": "Sumar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/matematica/sumar?n1=10&n2=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"matematica",
+								"sumar"
+							],
+							"query": [
+								{
+									"key": "n1",
+									"value": "10"
+								},
+								{
+									"key": "n2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/matematica/restar?n1=10&n2=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"matematica",
+								"restar"
+							],
+							"query": [
+								{
+									"key": "n1",
+									"value": "10"
+								},
+								{
+									"key": "n2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Multiplicar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/matematica/multiplicar?n1=10&n2=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"matematica",
+								"multiplicar"
+							],
+							"query": [
+								{
+									"key": "n1",
+									"value": "10"
+								},
+								{
+									"key": "n2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dividir (Valido)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/matematica/dividir?n1=10&n2=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"matematica",
+								"dividir"
+							],
+							"query": [
+								{
+									"key": "n1",
+									"value": "10"
+								},
+								{
+									"key": "n2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dividir (invalido)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/matematica/dividir?n1=10&n2=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"matematica",
+								"dividir"
+							],
+							"query": [
+								{
+									"key": "n1",
+									"value": "10"
+								},
+								{
+									"key": "n2",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OMDB",
+			"item": [
+				{
+					"name": "Buscar por página",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/omdb/searchbypage?search=cars&p=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"omdb",
+								"searchbypage"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "cars"
+								},
+								{
+									"key": "p",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Búsqueda completa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/omdb/searchcomplete?search=harry potter\n",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"omdb",
+								"searchcomplete"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "harry potter\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener por IMDb ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/omdb/getbyomdbid?imdbID=\"tt0317219\"",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"omdb",
+								"getbyomdbid"
+							],
+							"query": [
+								{
+									"key": "imdbID",
+									"value": "\"tt0317219\""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Alumnos",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/alumnos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"alumnos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAlumnoByDNI",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/alumnos/22888444",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"alumnos",
+								"22888444"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddAlumno",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"Monica Gaduro\",\r\n  \"dni\": \"11222333\",\r\n  \"edad\": 25\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/alumnos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"alumnos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteAlumno",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"dni\": \"11222333\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/alumnos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"alumnos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

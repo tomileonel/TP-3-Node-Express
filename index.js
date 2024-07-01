@@ -1,123 +1,126 @@
-import alumnosArray from "./src/models/alumno.js"
-import {sumar, restar, multiplicar, dividir} from "./src/modules/matematica.js"
-import {OMDBSearchByPage, OMDBSearchComplete, OMDBGetByImdbID} from
-"./src/modules/omdbwrapper.js"
-import express from "express"; 
+import express from 'express';
+import cors from 'cors';
+import { sumar, restar, multiplicar, dividir } from './src/modules/matematica.js';
+import { OMDBSearchByPage, OMDBSearchComplete, OMDBGetByImdbID } from './src/modules/OMDBWrapper.js';
+import { Alumno, alumnosArray } from './src/models/alumno.js';
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
+app.use(express.json());
+
+// Endpoints
 app.get('/', (req, res) => {
- res.status(200).send('¡Ya estoy respondiendo!');
-})
+  res.send('¡Ya estoy respondiendo!');
+});
 
+// Saludar endpoint
 app.get('/saludar/:nombre', (req, res) => {
-    res.status(200).send(`Hola ${req.params.nombre}`);
-})
+  const { nombre } = req.params;
+  res.send(`Hola ${nombre}`);
+});
 
+// Validar fecha endpoint
 app.get('/validarfecha/:ano/:mes/:dia', (req, res) => {
-    const { ano, mes, dia } = req.params;
-    const fechaString = `${ano}-${mes}-${dia}`;
-    const fechaParseada = Date.parse(fechaString);
+  const { ano, mes, dia } = req.params;
+  const date = new Date(`${ano}-${mes}-${dia}`);
 
-    if (!isNaN(fechaParseada)) {
-        res.status(200).send('Fecha válida');
-    } else {
-        res.status(400).send('Fecha inválida');
-    }
+  if (isNaN(date.getTime())) {
+    res.status(400).send('Fecha inválida');
+  } else {
+    res.status(200).send('Fecha válida');
+  }
 });
 
-app.get('/matematica/sumar/:n1/:n2', (req, res) => {
-    const n1 = req.params.numero1;
-    const n2 = req.params.numero2;
-    const resultado = sumar(parseFloat(n1), parseFloat(n2));
-    res.status(200).send(resultado.toString());
+// Matemática endpoints
+app.get('/matematica/sumar', (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = sumar(parseInt(n1), parseInt(n2));
+  res.status(200).json({ resultado });
 });
 
-app.get('/matematica/restar/:n1/:n2', (req, res) => {
-    const n1 = parseFloat(req.params.n1);
-    const n2 = parseFloat(req.params.n2);
-    const resultado = restar(n1, n2);
-    res.status(200).send(resultado.toString());
+app.get('/matematica/restar', (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = restar(parseInt(n1), parseInt(n2));
+  res.status(200).json({ resultado });
 });
 
-app.get('/matematica/multiplicar/:n1/:n2', (req, res) => {
-    const n1 = parseFloat(req.params.n1);
-    const n2 = parseFloat(req.params.n2);
-    const resultado = multiplicar(n1, n2);
-    res.status(200).send(resultado.toString());
+app.get('/matematica/multiplicar', (req, res) => {
+  const { n1, n2 } = req.query;
+  const resultado = multiplicar(parseInt(n1), parseInt(n2));
+  res.status(200).json({ resultado });
 });
 
-app.get('/matematica/dividir/:n1/:n2', (req, res) => {
-    const n1 = parseFloat(req.params.n1);
-    const n2 = parseFloat(req.params.n2);
-    try {
-        const resultado = dividir(n1, n2);
-        res.status(200).send(resultado.toString());
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
+app.get('/matematica/dividir', (req, res) => {
+  const { n1, n2 } = req.query;
+  if (parseInt(n2) === 0) {
+    res.status(400).send('El divisor no puede ser cero');
+  } else {
+    const resultado = dividir(parseInt(n1), parseInt(n2));
+    res.status(200).json({ resultado });
+  }
+});
+
+// OMDB endpoints
+app.get('/omdb/searchbypage', async (req, res) => {
+  const { search, p } = req.query;
+  const resultado = await OMDBSearchByPage(search, p);
+  res.status(200).json(resultado);
+});
+
+app.get('/omdb/searchcomplete', async (req, res) => {
+  const { search } = req.query;
+  const resultado = await OMDBSearchComplete(search);
+  res.status(200).json(resultado);
+});
+
+app.get('/omdb/getbyomdbid', async (req, res) => {
+  const imdbID  = req.query.imdbID;;
+  const resultado = await OMDBGetByImdbID(imdbID);
+  res.status(200).json(resultado);
 });
 
 app.get('/alumnos', (req, res) => {
-    res.status(200).send(alumnosArray);
+  res.status(200).json(alumnosArray);
 });
 
 app.get('/alumnos/:dni', (req, res) => {
-    const dni = req.params.dni;
+    const dniParam = req.params.dni; 
+    const alumno = alumnosArray.find(alumno => alumno.DNI === dniParam);
 
-    const alumno1 = alumnosArray.find(alumno => alumno.DNI === dni);
+    if (alumno) {
+        res.status(200).json(alumno); 
+    } else {
+        res.status(404).send('Alumno no encontrado'); 
+    }
+});
+
+app.post('/alumnos', (req, res) => {
+    const { username, dni, edad } = req.body;
     
-    if (alumno1) {
-        res.status(200).send(alumno1);
-
-    } else {
-        res.status(404).send("Alumno no encontrado");
+    const existeDNI = alumnosArray.some(alumno => alumno.DNI === dni);
+    if (existeDNI) {
+      return res.status(400).send('El DNI ya está registrado');
     }
-});
-
-app.post('/alumnos/:username/:dni/:edad', (req, res) => {
-    const username1 = req.params.username;
-    const dni1 = req.params.dni;
-    const edad1 = req.params.edad;
-    const nuevoAlumno = { username:username1, dni:dni1, edad:edad1 };
+  
+    const nuevoAlumno = new Alumno(username, dni, edad);
     alumnosArray.push(nuevoAlumno);
-    res.status(201).send("Alumno creado correctamente.");
-});
-
-app.delete('/alumnos/:dni', (req, res) => {
-    const dni = req.params.dni;
-    const alumnoIndex = alumnosArray.findIndex(alumno => alumno.dni === dni);
-    if (alumnoIndex !== -1) {
-        alumnosArray.splice(alumnoIndex, 1);
-        res.status(200).send("Alumno eliminado correctamente.");
+  
+    res.status(201).send('Alumno creado correctamente');
+  });
+  app.delete('/alumnos', (req, res) => {
+    const { dni } = req.body;
+    const index = alumnosArray.findIndex(alumno => alumno.DNI === dni);
+    if (index !== -1) {
+      alumnosArray.splice(index, 1);
+      res.status(200).send('OK');
     } else {
-        res.status(404).send("Alumno no encontrado.");
+      res.status(404).send('Not Found');
     }
-});
-
-app.get('/omdb/searchbypage/:search/:page?', async (req, res) => {
-    const search = req.params.search;
-    const page = req.params.page;
-    const result = await OMDBSearchByPage(search, page);
-    res.status(200).send(result);
-});
-
-app.get('/omdb/searchcomplete/:search', async (req, res) => {
-    const search = req.params.search;
-    const result = await OMDBSearchComplete(search);
-    res.status(200).send(result);
-});
-
-app.get('/omdb/getbyomdbid/:imdbID', async (req, res) => {
-    const imdbID = req.params.imdbID;
-    const result = await OMDBGetByImdbID(imdbID);
-    res.status(200).send(result);
-});
+  });
+  
 
 app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`);
-   });
-
-   
-
+  console.log(`Server running at http://localhost:${port}`);
+});
